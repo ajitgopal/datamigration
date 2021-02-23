@@ -9,12 +9,12 @@ $files = array ("css.css", "index.html", "js.js", "png.png");
 
         $files[$i] = $type;
     }
-
+	//Closing file pointer
     finfo_close ($info);
 
     echo $files[0]; // text/x-c -> WHAT ?!
     echo $files[1]; // text/html -> Ok !
     echo $files[2]; // text/x-c++ -> WHAT ?!
     echo $files[3]; // image/png -> Ok !
-	
+	echo $files[4]; // image/png -> Ok !
 ?>	
