@@ -57,8 +57,21 @@ if(isset($_POST["email"]) && isset($_POST["password"])  && !isset($_POST["olsreq
 				
 			}
 			//if user is login from page we will send login_success
-			echo "login_success";
+			echo "login_success ";
 			$BackToMyPage = $_SERVER['HTTP_REFERER'];
+				$BackToMyPage = $_SERVER['HTTP_REFERER'];
+				
+			
+			
+				if(!isset($BackToMyPage)) {
+					header('Location: '.$BackToMyPage);
+					echo"<script type='text/javascript'>
+					
+					</script>";
+				} else {
+					echo "<script> location.href='index.php'; </script>" ;// default page
+				} 
+				
 				if(!isset($BackToMyPage)) {
 					header('Location: '.$BackToMyPage);
 					echo"<script type='text/javascript'>
