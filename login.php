@@ -8,8 +8,9 @@ session_start();
 #Login script is begin here
 #If user given credential matches successfully with the data available in database then we will echo string login_success
 #login_success string will go back to called Anonymous funtion $("#login").click() 
+//Added client side mandatory validations
 
-if(isset($_POST["email"]) && isset($_POST["password"])){
+if(isset($_POST["email"]) && isset($_POST["password"])  && !isset($_POST["olsrequest"])){
 	$email = mysqli_real_escape_string($con,$_POST["email"]);
 	$password = $_POST["password"];
 	$sql = "SELECT * FROM user_info WHERE email = '$email' AND password = '$password'";
@@ -19,7 +20,7 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
 		$_SESSION["uid"] = $row["user_id"];
 		$_SESSION["name"] = $row["first_name"];
 		$ip_add = getenv("REMOTE_ADDR");
-		$ip = getenv('REMOTE_ADDR', true) ?: getenv('REMOTE_ADDR')
+		$ip = getenv('REMOTE_ADDR', true);
 		//This can be done later
 		
 		
@@ -29,10 +30,10 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
 	if($count == 10){
 		   	
 			if (isset($_COOKIE["product_list"])) {
-				$p_list = stripcslashes($_COOKIE["product_list"]);
+				$p_list = htmlentities(stripcslashes($_COOKIE["product_list"]));
 				//here we are decoding stored json product list cookie to normal array
-				$product_list = json_decode($p_list,true);
-				for ($i=0; $i < count($product_list); $i++) { 
+				$product_list = json_encode($p_list,true);
+				for ($i=0; $i < sizeof($product_list); $i++) { 
 					//After getting user id from database here we are checking user cart item if there is already product is listed or not
 					$verify_cart = "SELECT id FROM cart WHERE user_id = $_SESSION[uid] AND p_id = ".$product_list[$i];
 					$result  = mysqli_query($con,$verify_cart);
@@ -47,7 +48,7 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
 					}
 				}
 				//here we are destroying user cookie
-				setcookie("product_list","",strtotime("-1 day"),"/");
+				setcookie("joborderlist","",strtotime("-1 day"),"/");
 				//if user is logging from after cart page we will send cart_login
 				echo "cart_login";
 				
